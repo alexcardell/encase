@@ -11,8 +11,6 @@ package object encase {
 
   private def isSeparator(c: Char): Boolean = separators.contains(c)
 
-  private val camelPattern = "(?<=[a-z])(?=[A-Z])|(?<=[A-Z])(?=[A-Z][a-z])".r
-
   private def swapSeparator(c: Char, sep: Char): Char =
     if (isSeparator(c)) {
       sep
@@ -20,6 +18,11 @@ package object encase {
       c
     }
 
+  private val camelPattern = "(?<=[a-z])(?=[A-Z])|(?<=[A-Z])(?=[A-Z][a-z])".r
+
   private def aux(s: String, sep: Char): String =
-    camelPattern.replaceAllIn(s, sep.toString).toLowerCase.map(swapSeparator(_, sep))
+    camelPattern
+      .replaceAllIn(s, sep.toString)
+      .toLowerCase
+      .map(swapSeparator(_, sep))
 }
