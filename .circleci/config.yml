@@ -22,12 +22,27 @@ jobs:
             # fallback to using the latest cache if no exact match is found
             - v1-dependencies-
 
-      - run: ./mill -i __.compile
+      - run:
+          name: Check source formatting
+          command: ./mill -i mill.scalalib.scalafmt.ScalafmtModule/checkFormatAll __.sources
 
-      # - save_cache:
-      #     paths:
-      #       - ~/.ivy2
-      #     key: v1-dependencies--{{ checksum "build.sbt" }}
+      - run:
+          name: Compile
+          command: ./mill -i __.compile
 
-      # run tests!
-      - run: ./mill -i __.test
+      - save_cache:
+          paths:
+            - ~/.ivy2/cache
+            - ~/.m2
+            - ~/.mill
+            - ~/.cache/coursier
+            - ~/.cache/mill
+            - ./out
+          key: v1-dependencies--{{ checksum "build.sc" }}
+
+      - run:
+          name: Test
+          command: ./mill -i __.test -u reports/junit
+
+      - store_test_results:
+          path: reports
