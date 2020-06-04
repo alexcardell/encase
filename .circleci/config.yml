@@ -22,7 +22,7 @@ jobs:
             # fallback to using the latest cache if no exact match is found
             - v1-dependencies-
 
-      - run: ./mill __.compile
+      - run: ./mill -i __.compile
 
       # - save_cache:
       #     paths:
@@ -30,4 +30,4 @@ jobs:
       #     key: v1-dependencies--{{ checksum "build.sbt" }}
 
       # run tests!
-      - run: ./mill __.test
+      - run: ./mill -i __.test
